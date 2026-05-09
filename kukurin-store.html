@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KuKirin Electric Scooters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange: #FF6B00;
+    --orange-dark: #E05A00;
+    --black: #111111;
+    --white: #FFFFFF;
+    --gray-100: #F5F5F5;
+    --gray-200: #EBEBEB;
+    --gray-400: #AAAAAA;
+    --gray-600: #666666;
+    --green: #1A5C3A;
+    --red: #D32F2F;
+    --font-body: 'Barlow', sans-serif;
+    --font-display: 'Barlow Condensed', sans-serif;
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--black);
+    background: var(--white);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px; height: 64px;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--font-display); font-size: 22px; font-weight: 700;
+    letter-spacing: 0.5px; color: var(--black); text-decoration: none;
+    cursor: pointer;
+  }
+  .logo-icon {
+    width: 36px; height: 36px; background: var(--orange); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px;
+  }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a {
+    font-size: 14px; color: var(--gray-600); text-decoration: none;
+    font-weight: 500; cursor: pointer; transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--black); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .cart-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--black); color: #fff;
+    border: none; border-radius: 8px; padding: 8px 18px;
+    font-size: 14px; font-family: var(--font-body); font-weight: 500;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .cart-btn:hover { background: #333; }
+  .cart-count {
+    background: var(--orange); color: #fff;
+    font-size: 11px; font-weight: 700;
+    width: 18px; height: 18px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--black); color: #fff;
+    padding: 60px 32px;
+    display: flex; align-items: center; justify-content: space-between; gap: 32px;
+  }
+  .hero-left { max-width: 520px; }
+  .hero-badge {
+    display: inline-block;
+    background: var(--orange); color: #fff;
+    font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 4px; margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: var(--font-display); font-size: 58px; font-weight: 700;
+    line-height: 1.0; letter-spacing: -0.5px; margin-bottom: 16px;
+  }
+  .hero h1 span { color: var(--orange); }
+  .hero p { font-size: 16px; color: #aaa; line-height: 1.7; margin-bottom: 28px; }
+  .hero-btns { display: flex; gap: 12px; }
+  .btn-orange {
+    background: var(--orange); color: #fff; border: none;
+    padding: 12px 28px; border-radius: 8px; font-size: 15px; font-weight: 600;
+    font-family: var(--font-body); cursor: pointer; transition: background 0.15s;
+  }
+  .btn-orange:hover { background: var(--orange-dark); }
+  .btn-outline {
+    background: transparent; color: #fff; border: 1px solid #444;
+    padding: 12px 28px; border-radius: 8px; font-size: 15px; font-weight: 500;
+    font-family: var(--font-body); cursor: pointer; transition: border-color 0.15s;
+  }
+  .btn-outline:hover { border-color: #888; }
+  .hero-stats { display: flex; gap: 40px; }
+  .hero-stat { text-align: center; }
+  .hero-stat-num { font-family: var(--font-display); font-size: 36px; font-weight: 700; color: var(--orange); }
+  .hero-stat-label { font-size: 13px; color: #888; margin-top: 2px; }
+
+  /* FILTER BAR */
+  .filter-bar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 32px; border-bottom: 1px solid var(--gray-200);
+    background: var(--white); flex-wrap: wrap;
+  }
+  .filter-label { font-size: 13px; font-weight: 600; color: var(--gray-600); margin-right: 4px; }
+  .filter-btn {
+    font-size: 13px; padding: 6px 14px;
+    border: 1px solid var(--gray-200); border-radius: 99px;
+    background: var(--white); color: var(--gray-600);
+    cursor: pointer; font-family: var(--font-body); font-weight: 500;
+    transition: all 0.12s;
+  }
+  .filter-btn:hover { border-color: var(--black); color: var(--black); }
+  .filter-btn.active { background: var(--black); color: #fff; border-color: var(--black); }
+  .sort-wrap { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--gray-600); }
+  .sort-wrap select {
+    font-size: 13px; font-family: var(--font-body);
+    border: 1px solid var(--gray-200); border-radius: 8px;
+    padding: 6px 12px; background: var(--white); color: var(--black); cursor: pointer;
+  }
+
+  /* PRODUCTS GRID */
+  .products-section { padding: 24px 32px 48px; }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1px;
+    background: var(--gray-200);
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .product-card {
+    background: var(--white); padding: 20px;
+    cursor: pointer; transition: background 0.12s; position: relative;
+  }
+  .product-card:hover { background: var(--gray-100); }
+  .save-badge {
+    position: absolute; top: 16px; left: 16px;
+    background: var(--green); color: #fff;
+    font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 4px;
+  }
+  .product-img {
+    width: 100%; height: 160px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px; padding-top: 8px;
+  }
+  .product-img svg { width: 140px; height: 100px; }
+  .product-name { font-size: 14px; font-weight: 600; margin-bottom: 6px; line-height: 1.4; }
+  .product-stars { color: var(--orange); font-size: 13px; margin-bottom: 10px; }
+  .product-stars span { color: var(--gray-400); font-size: 12px; margin-left: 3px; }
+  .product-prices { display: flex; align-items: baseline; gap: 8px; margin-bottom: 14px; }
+  .price-now { font-size: 20px; font-weight: 700; color: var(--red); font-family: var(--font-display); }
+  .price-was { font-size: 13px; color: var(--gray-400); text-decoration: line-through; }
+  .add-btn {
+    width: 100%; padding: 9px;
+    background: var(--orange); color: #fff; border: none;
+    border-radius: 8px; font-size: 13px; font-weight: 600;
+    font-family: var(--font-body); cursor: pointer; transition: background 0.12s;
+  }
+  .add-btn:hover { background: var(--orange-dark); }
+  .add-btn.added { background: var(--green); }
+
+  /* PAGE VIEWS */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* CART OVERLAY */
+  .overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5); z-index: 200;
+    align-items: flex-start; justify-content: center;
+    padding: 40px 16px;
+  }
+  .overlay.show { display: flex; }
+  .modal {
+    background: var(--white); border-radius: 16px;
+    width: 100%; max-width: 520px;
+    max-height: 90vh; overflow-y: auto;
+  }
+  .modal-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 24px; border-bottom: 1px solid var(--gray-200);
+    position: sticky; top: 0; background: var(--white); border-radius: 16px 16px 0 0;
+  }
+  .modal-title { font-size: 18px; font-weight: 700; font-family: var(--font-display); }
+  .close-btn {
+    background: var(--gray-100); border: none; width: 32px; height: 32px;
+    border-radius: 50%; font-size: 18px; cursor: pointer; display: flex;
+    align-items: center; justify-content: center; color: var(--gray-600);
+  }
+  .close-btn:hover { background: var(--gray-200); }
+  .modal-body { padding: 24px; }
+
+  /* CART */
+  .cart-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 0; border-bottom: 1px solid var(--gray-200);
+  }
+  .cart-item-info { flex: 1; }
+  .cart-item-name { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+  .cart-item-price { font-size: 14px; font-weight: 700; color: var(--red); }
+  .qty-ctrl { display: flex; align-items: center; gap: 8px; }
+  .qty-btn {
+    width: 28px; height: 28px; border: 1px solid var(--gray-200); border-radius: 6px;
+    background: var(--white); cursor: pointer; font-size: 16px; font-weight: 500;
+    display: flex; align-items: center; justify-content: center; color: var(--black);
+  }
+  .qty-btn:hover { background: var(--gray-100); }
+  .qty-num { font-size: 14px; font-weight: 600; min-width: 20px; text-align: center; }
+  .cart-total {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 0 0; font-size: 18px; font-weight: 700; font-family: var(--font-display);
+  }
+  .checkout-btn {
+    width: 100%; padding: 14px; margin-top: 16px;
+    background: var(--orange); color: #fff; border: none;
+    border-radius: 10px; font-size: 16px; font-weight: 700;
+    font-family: var(--font-display); cursor: pointer; letter-spacing: 0.3px;
+  }
+  .checkout-btn:hover { background: var(--orange-dark); }
+
+  /* PAYMENT PAGE */
+  .payment-page { max-width: 600px; margin: 0 auto; padding: 32px 20px 60px; }
+  .back-link {
+    display: flex; align-items: center; gap: 6px; font-size: 14px;
+    color: var(--gray-600); cursor: pointer; margin-bottom: 24px;
+    text-decoration: none; font-weight: 500; width: fit-content;
+  }
+  .back-link:hover { color: var(--black); }
+  .payment-title { font-family: var(--font-display); font-size: 32px; font-weight: 700; margin-bottom: 4px; }
+  .payment-sub { font-size: 14px; color: var(--gray-600); margin-bottom: 28px; }
+  .order-summary {
+    background: var(--gray-100); border-radius: 12px;
+    padding: 18px 20px; margin-bottom: 28px;
+  }
+  .order-summary-title { font-size: 13px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; }
+  .order-line { display: flex; justify-content: space-between; font-size: 14px; padding: 4px 0; }
+  .order-line.total {
+    border-top: 1px solid var(--gray-200); margin-top: 10px; padding-top: 12px;
+    font-size: 17px; font-weight: 700; font-family: var(--font-display);
+  }
+  .order-line .free { color: var(--green); font-weight: 600; }
+
+  .pay-methods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px; }
+  .pay-method {
+    border: 1.5px solid var(--gray-200); border-radius: 12px;
+    padding: 16px 8px; text-align: center; cursor: pointer;
+    background: var(--white); transition: border-color 0.12s;
+  }
+  .pay-method:hover { border-color: var(--black); }
+  .pay-method.selected { border-color: var(--orange); border-width: 2px; }
+  .pay-method-icon { font-size: 28px; margin-bottom: 6px; }
+  .pay-method-name { font-size: 13px; font-weight: 700; }
+  .pay-method-sub { font-size: 11px; color: var(--gray-600); margin-top: 2px; }
+
+  .payment-panel {
+    border: 1px solid var(--gray-200); border-radius: 12px;
+    padding: 22px; margin-bottom: 16px; display: none;
+  }
+  .payment-panel.show { display: block; }
+  .panel-title { font-size: 16px; font-weight: 700; font-family: var(--font-display); margin-bottom: 18px; color: var(--black); }
+
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 12px; font-weight: 700; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
+  .field input, .field select {
+    width: 100%; padding: 11px 14px; font-size: 15px;
+    font-family: var(--font-body); border: 1.5px solid var(--gray-200);
+    border-radius: 8px; outline: none; background: var(--white); color: var(--black);
+    transition: border-color 0.12s;
+  }
+  .field input:focus, .field select:focus { border-color: var(--orange); }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .card-wrap { position: relative; }
+  .card-wrap input { padding-right: 80px; }
+  .card-brands { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 11px; color: var(--gray-400); font-weight: 600; }
+
+  .paypal-panel-inner { text-align: center; padding: 8px 0 4px; }
+  .paypal-icon { font-size: 42px; margin-bottom: 12px; }
+  .paypal-desc { font-size: 14px; color: var(--gray-600); line-height: 1.7; max-width: 340px; margin: 0 auto 24px; }
+  .paypal-btn {
+    width: 100%; padding: 14px;
+    background: #003087; color: #fff; border: none;
+    border-radius: 10px; font-size: 15px; font-weight: 700;
+    font-family: var(--font-display); cursor: pointer; letter-spacing: 0.3px;
+  }
+  .paypal-btn:hover { background: #002070; }
+
+  .crypto-coins { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+  .coin-btn {
+    border: 1.5px solid var(--gray-200); border-radius: 10px;
+    padding: 14px 12px; cursor: pointer; display: flex; align-items: center; gap: 10px;
+    background: var(--white); transition: border-color 0.12s; font-family: var(--font-body);
+  }
+  .coin-btn:hover { border-color: var(--black); }
+  .coin-btn.chosen { border-color: var(--orange); border-width: 2px; background: #FFF8F3; }
+  .coin-icon { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .coin-name { font-size: 14px; font-weight: 700; }
+  .coin-ticker { font-size: 12px; color: var(--gray-600); }
+
+  .crypto-addr-box {
+    background: var(--gray-100); border-radius: 10px; padding: 18px;
+    display: none; margin-bottom: 4px;
+  }
+  .crypto-addr-box.show { display: block; }
+  .addr-label { font-size: 12px; font-weight: 700; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
+  .addr-value {
+    font-family: monospace; font-size: 12px; word-break: break-all;
+    background: var(--white); border: 1px solid var(--gray-200);
+    border-radius: 8px; padding: 10px 12px; margin-bottom: 12px; color: var(--black);
+  }
+  .addr-details { font-size: 13px; }
+  .addr-row { display: flex; justify-content: space-between; padding: 4px 0; }
+  .addr-row .label { color: var(--gray-600); }
+  .addr-row .value { font-weight: 600; }
+  .timer { color: var(--orange); }
+  .copy-btn {
+    width: 100%; margin-top: 12px; padding: 10px;
+    background: var(--white); border: 1.5px solid var(--gray-200);
+    border-radius: 8px; font-size: 13px; font-weight: 600;
+    font-family: var(--font-body); cursor: pointer; transition: background 0.12s;
+  }
+  .copy-btn:hover { background: var(--gray-200); }
+
+  .secure-row { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--gray-600); margin-bottom: 18px; }
+  .pay-final-btn {
+    width: 100%; padding: 15px;
+    background: var(--orange); color: #fff; border: none;
+    border-radius: 10px; font-size: 17px; font-weight: 700;
+    font-family: var(--font-display); cursor: pointer; letter-spacing: 0.3px;
+    transition: background 0.15s;
+  }
+  .pay-final-btn:hover { background: var(--orange-dark); }
+  .pay-final-btn:disabled { background: var(--gray-400); cursor: not-allowed; }
+
+  .success-box { text-align: center; padding: 60px 20px; }
+  .success-icon { font-size: 64px; margin-bottom: 20px; }
+  .success-title { font-family: var(--font-display); font-size: 36px; font-weight: 700; margin-bottom: 10px; }
+  .success-sub { font-size: 15px; color: var(--gray-600); margin-bottom: 6px; }
+  .success-order { font-size: 13px; color: var(--gray-400); margin-bottom: 32px; }
+  .back-shop-btn {
+    padding: 12px 32px; background: var(--black); color: #fff; border: none;
+    border-radius: 10px; font-size: 15px; font-weight: 700; font-family: var(--font-display);
+    cursor: pointer; letter-spacing: 0.3px;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--black); color: #888;
+    padding: 32px; display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-logo { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: #fff; }
+  .footer-links { display: flex; gap: 24px; font-size: 13px; }
+  .footer-links a { color: #888; text-decoration: none; cursor: pointer; }
+  .footer-links a:hover { color: #fff; }
+  .footer-copy { font-size: 13px; }
+
+  @media (max-width: 640px) {
+    nav { padding: 0 16px; }
+    .nav-links { display: none; }
+    .hero { flex-direction: column; padding: 40px 16px; }
+    .hero h1 { font-size: 40px; }
+    .hero-stats { gap: 20px; }
+    .filter-bar { padding: 12px 16px; }
+    .products-section { padding: 16px 16px 40px; }
+    .pay-methods { grid-template-columns: 1fr 1fr 1fr; }
+    .field-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo" onclick="showPage('store')">
+    <div class="logo-icon">⚡</div> KuKirin
+  </div>
+  <div class="nav-links">
+    <a onclick="showPage('store')">E-Scooters</a>
+    <a href="#">Parts & Accessories</a>
+    <a href="#">Support</a>
+  </div>
+  <div class="nav-right">
+    <button class="cart-btn" onclick="openCart()">
+      🛒 Cart <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- STORE PAGE -->
+<div id="storePage" class="page active">
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-badge">Official EU Retailer</div>
+      <h1>Ride the future,<br><span>today.</span></h1>
+      <p>Premium electric scooters built for urban commuters and thrill-seekers. Free shipping across Europe.</p>
+      <div class="hero-btns">
+        <button class="btn-orange" onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">Browse models →</button>
+        <button class="btn-outline" onclick="openCart()">View cart</button>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">12+</div><div class="hero-stat-label">Models in stock</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">2yr</div><div class="hero-stat-label">Warranty</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">Free</div><div class="hero-stat-label">EU Shipping</div></div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <span class="filter-label">Filter</span>
+    <button class="filter-btn active" onclick="filterCat('all',this)">All models</button>
+    <button class="filter-btn" onclick="filterCat('urban',this)">Urban</button>
+    <button class="filter-btn" onclick="filterCat('performance',this)">Performance</button>
+    <button class="filter-btn" onclick="filterCat('offroad',this)">Off-road</button>
+    <button class="filter-btn" onclick="filterCat('budget',this)">Budget</button>
+    <div class="sort-wrap">Sort by
+      <select onchange="sortProducts(this.value)">
+        <option value="rec">Recommend</option>
+        <option value="low">Price: low to high</option>
+        <option value="high">Price: high to low</option>
+        <option value="save">Biggest saving</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="products-section" id="productsSection">
+    <div class="products-grid" id="productsGrid"></div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">⚡ KuKirin</div>
+    <div class="footer-links">
+      <a>Privacy Policy</a>
+      <a>Returns</a>
+      <a>Warranty</a>
+      <a>Contact</a>
+    </div>
+    <div class="footer-copy">© 2025 KuKirin Scooters. All rights reserved.</div>
+  </footer>
+</div>
+
+<!-- PAYMENT PAGE -->
+<div id="paymentPage" class="page">
+  <div class="payment-page">
+    <a class="back-link" onclick="showPage('store')">← Back to shop</a>
+    <div class="payment-title">Secure Checkout</div>
+    <div class="payment-sub">Complete your order below</div>
+
+    <div class="order-summary">
+      <div class="order-summary-title">Order summary</div>
+      <div id="paymentOrderLines"></div>
+      <div class="order-line total"><span>Total</span><span id="paymentTotal">€0.00</span></div>
+    </div>
+
+    <div class="pay-methods">
+      <div class="pay-method selected" onclick="selectPayMethod('card',this)">
+        <div class="pay-method-icon">💳</div>
+        <div class="pay-method-name">Card</div>
+        <div class="pay-method-sub">Credit / Debit</div>
+      </div>
+      <div class="pay-method" onclick="selectPayMethod('paypal',this)">
+        <div class="pay-method-icon">🅿️</div>
+        <div class="pay-method-name">PayPal</div>
+        <div class="pay-method-sub">Fast & secure</div>
+      </div>
+      <div class="pay-method" onclick="selectPayMethod('crypto',this)">
+        <div class="pay-method-icon">₿</div>
+        <div class="pay-method-name">Crypto</div>
+        <div class="pay-method-sub">BTC, ETH & more</div>
+      </div>
+    </div>
+
+    <!-- CARD PANEL -->
+    <div class="payment-panel show" id="panelCard">
+      <div class="panel-title">💳 Card Details</div>
+      <div class="field">
+        <label>Card number</label>
+        <div class="card-wrap">
+          <input type="text" placeholder="0000 0000 0000 0000" maxlength="19" oninput="fmtCard(this)" />
+          <div class="card-brands">VISA / MC</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Name on card</label>
+        <input type="text" placeholder="John Smith" />
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Expiry date</label>
+          <input type="text" placeholder="MM / YY" maxlength="7" oninput="fmtExpiry(this)" />
+        </div>
+        <div class="field">
+          <label>CVV</label>
+          <input type="text" placeholder="123" maxlength="4" />
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYPAL PANEL -->
+    <div class="payment-panel" id="panelPaypal">
+      <div class="paypal-panel-inner">
+        <div class="paypal-icon">🅿️</div>
+        <div class="paypal-desc">You'll be securely redirected to PayPal to complete your payment. You don't need to share your card details with us.</div>
+        <button class="paypal-btn" onclick="alert('Connect PayPal SDK here — see developer.paypal.com')">Continue with PayPal →</button>
+      </div>
+    </div>
+
+    <!-- CRYPTO PANEL -->
+    <div class="payment-panel" id="panelCrypto">
+      <div class="panel-title">₿ Choose Cryptocurrency</div>
+      <div class="crypto-coins">
+        <button class="coin-btn chosen" onclick="selectCoin('btc',this)">
+          <div class="coin-icon" style="background:#FFF3E0">₿</div>
+          <div><div class="coin-name">Bitcoin</div><div class="coin-ticker">BTC</div></div>
+        </button>
+        <button class="coin-btn" onclick="selectCoin('eth',this)">
+          <div class="coin-icon" style="background:#EDE7F6">Ξ</div>
+          <div><div class="coin-name">Ethereum</div><div class="coin-ticker">ETH</div></div>
+        </button>
+        <button class="coin-btn" onclick="selectCoin('sol',this)">
+          <div class="coin-icon" style="background:#E8F5E9">◎</div>
+          <div><div class="coin-name">Solana</div><div class="coin-ticker">SOL</div></div>
+        </button>
+        <button class="coin-btn" onclick="selectCoin('ltc',this)">
+          <div class="coin-icon" style="background:#E3F2FD">Ł</div>
+          <div><div class="coin-name">Litecoin</div><div class="coin-ticker">LTC</div></div>
+        </button>
+      </div>
+      <div class="crypto-addr-box show" id="cryptoBox">
+        <div class="addr-label">Send payment to this wallet address</div>
+        <div class="addr-value" id="cryptoAddr">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</div>
+        <div class="addr-details">
+          <div class="addr-row"><span class="label">Amount</span><span class="value" id="cryptoAmt">€0.00 ≈ 0.0000 BTC</span></div>
+          <div class="addr-row"><span class="label">Network</span><span class="value" id="cryptoNet">Bitcoin (BTC)</span></div>
+          <div class="addr-row"><span class="label">Address expires in</span><span class="value timer" id="cryptoTimer">15:00</span></div>
+        </div>
+        <button class="copy-btn" onclick="copyAddr()">📋 Copy wallet address</button>
+      </div>
+    </div>
+
+    <div class="secure-row">🔒 Payments are processed securely. We never store your card details.</div>
+
+    <button class="pay-final-btn" id="payFinalBtn" onclick="submitPayment()">
+      🔒 <span id="payFinalText">Pay now</span>
+    </button>
+
+    <div id="successPanel" style="display:none">
+      <div class="success-box">
+        <div class="success-icon">✅</div>
+        <div class="success-title">Order Confirmed!</div>
+        <div class="success-sub">Thank you for your purchase. A confirmation email is on its way.</div>
+        <div class="success-order">Order #KK-<span id="orderNum"></span></div>
+        <button class="back-shop-btn" onclick="showPage('store')">← Back to shop</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CART OVERLAY -->
+<div class="overlay" id="cartOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title">Your Cart 🛒</span>
+      <button class="close-btn" onclick="closeCart()">✕</button>
+    </div>
+    <div class="modal-body" id="cartModalBody"></div>
+  </div>
+</div>
+
+<script>
+const products = [
+  {id:1, name:"KuKirin G2 Electric Scooter", cat:"urban", price:489, was:899, save:46, rating:4.5, reviews:103},
+  {id:2, name:"KuKirin G2 Pro Electric Scooter", cat:"performance", price:429, was:999, save:57, rating:4.5, reviews:112},
+  {id:3, name:"KuKirin X1 Electric Motorcycle", cat:"offroad", price:1239, was:1800, save:31, rating:4.5, reviews:2},
+  {id:4, name:"KuKirin G4 Electric Scooter", cat:"performance", price:859, was:1227, save:30, rating:4, reviews:82},
+  {id:5, name:"KuKirin G2 Master Electric Scooter", cat:"performance", price:839, was:1199, save:30, rating:4, reviews:91},
+  {id:6, name:"KuKirin G2 Ultra Electric Scooter", cat:"performance", price:669, was:1000, save:33, rating:4, reviews:16},
+  {id:7, name:"KuKirin G2 MAX Electric Scooter", cat:"performance", price:649, was:999, save:35, rating:4.5, reviews:107},
+  {id:8, name:"KuKirin G3 Electric Scooter", cat:"performance", price:579, was:956, save:39, rating:4.5, reviews:85},
+  {id:9, name:"KuKirin G2 Pro ABE Electric Scooter", cat:"urban", price:499, was:899, save:44, rating:4, reviews:1},
+  {id:10, name:"KuKirin G3 Pro Electric Scooter", cat:"performance", price:1159, was:1784, save:35, rating:4.5, reviews:58},
+  {id:11, name:"KuKirin M4 Max Electric Scooter", cat:"offroad", price:419, was:799, save:48, rating:4, reviews:38},
+  {id:12, name:"T1 Pro Electric Scooter", cat:"budget", price:259, was:369, save:30, rating:5, reviews:4},
+];
+
+let cart = {};
+let currentCat = 'all';
+let currentMethod = 'card';
+let currentCoin = 'btc';
+let timerInterval = null;
+let timerSecs = 900;
+
+const coins = {
+  btc: {addr:'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh', net:'Bitcoin (BTC)', rate:0.0000177},
+  eth: {addr:'0x742d35Cc6634C0532925a3b8D4C9C3D4b2e19e24', net:'Ethereum (ERC-20)', rate:0.000427},
+  sol: {addr:'5FHwkrdxntqbYgXmxmHqKWvYXsDR8pVHqe4E4dPkhm2Y', net:'Solana', rate:0.0096},
+  ltc: {addr:'LbYC9KqGS9mhYLtFjMCnqW1mHf7mZmjj1a', net:'Litecoin', rate:0.016},
+};
+const coinSymbols = {btc:'BTC', eth:'ETH', sol:'SOL', ltc:'LTC'};
+
+function scooterSVG() {
+  return `<svg viewBox="0 0 140 90" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="25" cy="72" r="14" fill="none" stroke="#222" stroke-width="3"/>
+    <circle cx="25" cy="72" r="6" fill="#222"/>
+    <circle cx="115" cy="72" r="14" fill="none" stroke="#222" stroke-width="3"/>
+    <circle cx="115" cy="72" r="6" fill="#222"/>
+    <rect x="35" y="55" width="70" height="8" rx="4" fill="#333"/>
+    <rect x="38" y="38" width="8" height="20" rx="3" fill="#444"/>
+    <rect x="30" y="35" width="24" height="5" rx="2.5" fill="#FF6B00"/>
+    <rect x="90" y="20" width="6" height="38" rx="3" fill="#444"/>
+    <rect x="84" y="18" width="18" height="5" rx="2.5" fill="#555"/>
+    <rect x="86" y="23" width="6" height="12" rx="2" fill="#FF6B00"/>
+    <line x1="39" y1="55" x2="90" y2="55" stroke="#555" stroke-width="3" stroke-linecap="round"/>
+    <line x1="25" y1="58" x2="39" y2="55" stroke="#555" stroke-width="3" stroke-linecap="round"/>
+    <line x1="90" y1="55" x2="115" y2="58" stroke="#555" stroke-width="3" stroke-linecap="round"/>
+  </svg>`;
+}
+
+function stars(r) {
+  let s = '';
+  for (let i = 1; i <= 5; i++) {
+    if (i <= Math.floor(r)) s += '★';
+    else if (i - 0.5 <= r) s += '½';
+    else s += '☆';
+  }
+  return s;
+}
+
+function renderProducts(list) {
+  document.getElementById('productsGrid').innerHTML = list.map(p => `
+    <div class="product-card">
+      <span class="save-badge">Save ${p.save}%</span>
+      <div class="product-img">${scooterSVG()}</div>
+      <div class="product-name">${p.name}</div>
+      <div class="product-stars">${stars(p.rating)}<span>(${p.reviews})</span></div>
+      <div class="product-prices">
+        <span class="price-now">€${p.price.toLocaleString()}</span>
+        <span class="price-was">€${p.was.toLocaleString()}</span>
+      </div>
+      <button class="add-btn" id="addbtn-${p.id}" onclick="addToCart(${p.id})">Add to cart</button>
+    </div>`).join('');
+}
+
+function filterCat(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  let list = cat === 'all' ? products : products.filter(p => p.cat === cat);
+  renderProducts(list);
+}
+
+function sortProducts(v) {
+  let list = currentCat === 'all' ? [...products] : products.filter(p => p.cat === currentCat);
+  if (v === 'low') list.sort((a,b) => a.price - b.price);
+  else if (v === 'high') list.sort((a,b) => b.price - a.price);
+  else if (v === 'save') list.sort((a,b) => b.save - a.save);
+  renderProducts(list);
+}
+
+function addToCart(id) {
+  cart[id] = (cart[id] || 0) + 1;
+  updateCartCount();
+  const btn = document.getElementById('addbtn-' + id);
+  if (btn) {
+    btn.textContent = 'Added ✓';
+    btn.classList.add('added');
+    setTimeout(() => { btn.textContent = 'Add to cart'; btn.classList.remove('added'); }, 1500);
+  }
+}
+
+function updateCartCount() {
+  document.getElementById('cartCount').textContent = Object.values(cart).reduce((a,b) => a+b, 0);
+}
+
+function cartItems() {
+  return Object.entries(cart).map(([id, qty]) => {
+    const p = products.find(x => x.id == id);
+    return {...p, qty};
+  }).filter(x => x.qty > 0);
+}
+
+function cartTotal() {
+  return cartItems().reduce((s, i) => s + i.price * i.qty, 0);
+}
+
+function openCart() {
+  const items = cartItems();
+  const body = document.getElementById('cartModalBody');
+  if (items.length === 0) {
+    body.innerHTML = '<p style="color:#888;font-size:14px;padding:20px 0;text-align:center">Your cart is empty.<br><br><button onclick="closeCart()" style="margin-top:8px;padding:10px 24px;background:var(--orange);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font-body)">Continue shopping</button></p>';
+  } else {
+    body.innerHTML = `
+      ${items.map(i => `
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <div class="cart-item-name">${i.name}</div>
+            <div class="cart-item-price">€${(i.price * i.qty).toLocaleString()}</div>
+          </div>
+          <div class="qty-ctrl">
+            <button class="qty-btn" onclick="changeQty(${i.id},-1)">−</button>
+            <span class="qty-num">${i.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${i.id},1)">+</button>
+          </div>
+        </div>`).join('')}
+      <div class="cart-total"><span>Total</span><span>€${cartTotal().toLocaleString()}</span></div>
+      <button class="checkout-btn" onclick="closeCart();openPayment()">Proceed to checkout →</button>`;
+  }
+  document.getElementById('cartOverlay').classList.add('show');
+}
+
+function closeCart() {
+  document.getElementById('cartOverlay').classList.remove('show');
+}
+
+function changeQty(id, delta) {
+  cart[id] = (cart[id] || 0) + delta;
+  if (cart[id] <= 0) delete cart[id];
+  updateCartCount();
+  openCart();
+}
+
+function openPayment() {
+  const items = cartItems();
+  const total = cartTotal();
+  document.getElementById('paymentOrderLines').innerHTML =
+    items.map(i => `<div class="order-line"><span>${i.name} ×${i.qty}</span><span>€${(i.price*i.qty).toLocaleString()}</span></div>
+    <div class="order-line"><span style="color:var(--gray-600)">Shipping</span><span class="free">Free</span></div>`).join('');
+  document.getElementById('paymentTotal').textContent = '€' + total.toLocaleString();
+  document.getElementById('payFinalText').textContent = 'Pay €' + total.toLocaleString();
+  document.getElementById('payFinalBtn').style.display = 'block';
+  document.getElementById('successPanel').style.display = 'none';
+  document.querySelectorAll('.payment-panel').forEach(p => p.classList.remove('show'));
+  document.getElementById('panelCard').classList.add('show');
+  document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('selected'));
+  document.querySelector('.pay-method').classList.add('selected');
+  currentMethod = 'card';
+  updateCryptoDisplay();
+  showPage('payment');
+}
+
+function showPage(page) {
+  document.getElementById('storePage').classList.toggle('active', page === 'store');
+  document.getElementById('paymentPage').classList.toggle('active', page === 'payment');
+  window.scrollTo(0, 0);
+}
+
+function selectPayMethod(method, el) {
+  currentMethod = method;
+  document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('selected'));
+  el.classList.add('selected');
+  document.querySelectorAll('.payment-panel').forEach(p => p.classList.remove('show'));
+  document.getElementById('panel' + method.charAt(0).toUpperCase() + method.slice(1)).classList.add('show');
+  const btn = document.getElementById('payFinalBtn');
+  const total = cartTotal();
+  if (method === 'paypal') {
+    btn.style.display = 'none';
+  } else {
+    btn.style.display = 'block';
+    if (method === 'crypto') {
+      document.getElementById('payFinalText').textContent = 'I have sent the payment';
+      clearInterval(timerInterval); timerSecs = 900; startTimer();
+    } else {
+      document.getElementById('payFinalText').textContent = 'Pay €' + total.toLocaleString();
+      clearInterval(timerInterval);
+    }
+  }
+}
+
+function selectCoin(coin, el) {
+  currentCoin = coin;
+  document.querySelectorAll('.coin-btn').forEach(b => b.classList.remove('chosen'));
+  el.classList.add('chosen');
+  updateCryptoDisplay();
+  clearInterval(timerInterval); timerSecs = 900; startTimer();
+}
+
+function updateCryptoDisplay() {
+  const total = cartTotal();
+  const c = coins[currentCoin];
+  const sym = coinSymbols[currentCoin];
+  document.getElementById('cryptoAddr').textContent = c.addr;
+  document.getElementById('cryptoAmt').textContent = '€' + total.toLocaleString() + ' ≈ ' + (total * c.rate).toFixed(4) + ' ' + sym;
+  document.getElementById('cryptoNet').textContent = c.net;
+}
+
+function startTimer() {
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timerSecs--;
+    if (timerSecs <= 0) { clearInterval(timerInterval); document.getElementById('cryptoTimer').textContent = 'Expired'; return; }
+    const m = Math.floor(timerSecs / 60);
+    const s = timerSecs % 60;
+    document.getElementById('cryptoTimer').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+  }, 1000);
+}
+
+function copyAddr() {
+  const addr = coins[currentCoin].addr;
+  if (navigator.clipboard) navigator.clipboard.writeText(addr);
+  const btn = document.querySelector('.copy-btn');
+  btn.textContent = '✅ Copied!';
+  setTimeout(() => { btn.textContent = '📋 Copy wallet address'; }, 2000);
+}
+
+function fmtCard(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,16);
+  el.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+
+function fmtExpiry(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,4);
+  if (v.length >= 3) v = v.substring(0,2) + ' / ' + v.substring(2);
+  el.value = v;
+}
+
+function submitPayment() {
+  clearInterval(timerInterval);
+  const btn = document.getElementById('payFinalBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Processing...';
+  setTimeout(() => {
+    document.querySelectorAll('.payment-panel').forEach(p => p.classList.remove('show'));
+    document.querySelectorAll('.pay-methods, .secure-row').forEach(el => el.style.display = 'none');
+    btn.style.display = 'none';
+    document.getElementById('successPanel').style.display = 'block';
+    document.getElementById('orderNum').textContent = Math.floor(Math.random() * 90000 + 10000);
+    cart = {};
+    updateCartCount();
+  }, 2000);
+}
+
+renderProducts(products);
+</script>
+</body>
+</html>
